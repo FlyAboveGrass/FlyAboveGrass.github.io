@@ -1,15 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://flyabovegrass.github.io</id>
-    <title>Gridea</title>
-    <updated>2021-05-24T07:15:40.393Z</updated>
+    <title>杨家健的个人博客</title>
+    <updated>2021-05-24T07:44:40.945Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://flyabovegrass.github.io"/>
     <link rel="self" href="https://flyabovegrass.github.io/atom.xml"/>
-    <subtitle>温故而知新</subtitle>
+    <subtitle>知耻而后勇，温故而知新</subtitle>
     <logo>https://flyabovegrass.github.io/images/avatar.png</logo>
     <icon>https://flyabovegrass.github.io/favicon.ico</icon>
-    <rights>All rights reserved 2021, Gridea</rights>
+    <rights>All rights reserved 2021, 杨家健的个人博客</rights>
+    <entry>
+        <title type="html"><![CDATA[WeakSet 和 WeakMap]]></title>
+        <id>https://flyabovegrass.github.io/post/weakset-he-weakmap/</id>
+        <link href="https://flyabovegrass.github.io/post/weakset-he-weakmap/">
+        </link>
+        <updated>2021-05-24T07:42:23.000Z</updated>
+        <content type="html"><![CDATA[<h4 id="弱引用">弱引用</h4>
+<p>如果没有其他的对WeakSet中对象的引用，那么这些对象会被当成垃圾回收掉。</p>
+<p>a 强引用 obj，b 弱引用 obj，那么当 a 不再引用 obj ，obj就会被垃圾回收回收掉，而不顾及b的引用（引用计数法垃圾回收）。</p>
+<blockquote>
+<p>无法预测垃圾回收触发的时机，所以弱引用的属性不能遍历。</p>
+</blockquote>
+<h4 id="weakset">WeakSet</h4>
+<ol>
+<li>WeakSet的成员只能是对象，而不能是其他类型的值。</li>
+<li>WeakSet中的对象都是弱引用，即垃圾回收机制不考虑WeakSet对该对象的引用</li>
+<li>没有size属性，无法遍历</li>
+</ol>
+<blockquote>
+<p>WeakSet 是弱引用：集合中对象的引用为弱引用。</p>
+</blockquote>
+<h4 id="weakmap">WeakMap</h4>
+<p>和map类似。只接受对象作为键名，且键名所指向的对象，不计入垃圾回收机制。</p>
+<p>不能包含无引用的对象，否则会被自动清除出集合</p>
+<h5 id="weakmap的应用">WeakMap的应用：</h5>
+<h6 id="私有数据">私有数据</h6>
+<pre><code>const privateData = new WeakMap();
+
+class Person {
+    constructor(name, age) {
+        privateData.set(this, { name: name, age: age });
+    }
+
+    getName() {
+        return privateData.get(this).name;
+    }
+
+    getAge() {
+        return privateData.get(this).age;
+    }
+}
+
+export default Person;
+</code></pre>
+<h6 id="缓存">缓存</h6>
+<pre><code>const cache = new WeakMap();
+
+function countOwnKeys(obj) {
+  if (cache.has(obj)) {
+    return [cache.get(obj), 'cached'];
+  } else {
+    const count = Object.keys(obj).length;
+    cache.set(obj, count);
+    return [count, 'computed'];
+  }
+}
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Hello Gridea]]></title>
         <id>https://flyabovegrass.github.io/post/hello-gridea/</id>
